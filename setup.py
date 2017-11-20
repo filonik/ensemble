@@ -8,7 +8,7 @@ setup(
     license = 'MIT',
     author="Daniel Filonik",
     author_email = 'daniel.filonik@qut.edu.au',
-    description = 'High-level framework for distributed OpenGL rendering.',
+    description = 'Framework for distributed OpenGL rendering.',
     url = 'http://github.com/filonik/ensemble',
     packages = [
         'ensemble',

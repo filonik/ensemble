@@ -35,10 +35,10 @@ class ShaderToyScene(Scene):
         from . import applications
         from glue.gl import utilities
         
-        self._program = utilities.create_program([
-            utilities.create_shader(applications.data_path("shaders/noop.vs")),
-            utilities.create_shader(applications.data_path("shaders/quad.gs")),
-            utilities.create_shader(applications.data_path("shaders/quad.fs")),
+        self._program = utilities.load_program([
+            applications.data_path("shaders/noop.vs"),
+            applications.data_path("shaders/quad.gs"),
+            applications.data_path("shaders/quad.fs"),
         ], uniforms={
             "iChannel0": gl.Sampler2DType,
             "iChannel1": gl.Sampler2DType,
@@ -50,7 +50,7 @@ class ShaderToyScene(Scene):
             "tex_coord_transform": gl.Mat4Type,
         })
         
-        self._texture = utilities.create_texture(applications.data_path("images/smile.png"))
+        self._texture = utilities.load_texture(applications.data_path("images/smile.png"))
         
         self._vao = gl.VertexArray().create()
         
@@ -68,14 +68,14 @@ class ShaderToyScene(Scene):
         gl.clear()
         
         with gl.bound(self._program), gl.bound(self._vao):
-            self._program.uniforms["iResolution"](context.video.global_.resolution)
-            self._program.uniforms["iTime"](t)
+            self._program.uniforms["iResolution"] = context.video.global_.resolution
+            self._program.uniforms["iTime"] = t
             '''
-            self._program.uniforms["model"](model)
-            self._program.uniforms["view"](view)
-            self._program.uniforms["projection"](projection)
+            self._program.uniforms["model"] = model
+            self._program.uniforms["view"] = view
+            self._program.uniforms["projection"] = projection
             '''
-            self._program.uniforms["tex_coord_transform"](self._tex_coord_transform)
+            self._program.uniforms["tex_coord_transform"] = self._tex_coord_transform
             
             gl.depth_mask(False)
             GL.glDrawArrays(GL.GL_POINTS, 0, 1)

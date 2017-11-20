@@ -7,7 +7,6 @@ import logging.config
 import argparse
 import json
 
-from encore import resources
 
 DEFAULT_CONFIG = {}
 
@@ -67,8 +66,19 @@ def hostname():
     return socket.gethostname()
 
 
+def application_root():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    else:
+        return os.getcwd()
+
+
+def application_path(*paths):
+    return os.path.join(application_root(), *paths)
+
+
 def data_path(*args):
-    return resources.application_path("data", *args)
+    return application_path("data", *args)
 
 
 def config_path():
@@ -76,12 +86,12 @@ def config_path():
         return args.config
     
     filename = hostname() + ".cfg"
-    path = resources.application_path("data/scripts", filename)
+    path = data_path("scripts", filename)
     if os.path.isfile(path):
         return path
     
     filename = "default.cfg"
-    path = resources.application_path("data/scripts", filename)
+    path = data_path("scripts", filename)
     if os.path.isfile(path):
         return path
 
