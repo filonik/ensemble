@@ -1,2 +1,3 @@
 # ensemble
-Framework for distributed OpenGL rendering.
+High-level framework for distributed OpenGL rendering.
+
